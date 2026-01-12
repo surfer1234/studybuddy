@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://api.dicebear.com/7.x/shapes/svg?seed=study&backgroundColor=00d2ff">
+    <link rel="manifest" href="manifest.json">
+    
+    <title>StudyBuddy - Let's Go! 🚀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --neon-blue: #00d2ff;
+            --neon-purple: #9d50bb;
+            --neon-pink: #ff007a;
+            --neon-green: #39ff14;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #020617;
+            color: #f8fafc;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        /* Subtle Dynamic Animated Background */
+        .bg-animate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #020617, #0f172a, #020617, #1e1b4b);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Floating Soft Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.15;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        /* 3D Electrified Brain Container */
+        .brain-3d-scene {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            perspective: 2000px;
+            z-index: -1;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        .brain-3d-model {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate3DBrain 15s infinite linear;
+        }
+
+        /* Multi-layered 3D effect */
+        .brain-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: var(--neon-blue);
+            stroke-width: 0.4;
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+            transition: stroke 0.5s ease;
+        }
+
+        /* Layer Depth and Color Variances */
+        .layer-1 { transform: translateZ(-80px); opacity: 0.1; stroke: var(--neon-purple); }
+        .layer-2 { transform: translateZ(-40px); opacity: 0.2; }
+        .layer-3 { transform: translateZ(0px); opacity: 0.7; stroke-width: 0.6; stroke: #fff; filter: drop-shadow(0 0 15px var(--neon-blue)); }
+        .layer-4 { transform: translateZ(40px); opacity: 0.2; }
+        .layer-5 { transform: translateZ(80px); opacity: 0.1; stroke: var(--neon-purple); }
+
+        @keyframes rotate3DBrain {
+            from { transform: rotateY(0deg) rotateX(15deg) rotateZ(5deg); }
+            to { transform: rotateY(360deg) rotateX(15deg) rotateZ(5deg); }
+        }
+
+        /* Improved Lightning Bolts */
+        .lightning {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bolt {
+            position: absolute;
+            background: #fff;
+            width: 1.5px;
+            height: 150px;
+            filter: blur(1px) drop-shadow(0 0 15px var(--neon-blue));
+            opacity: 0;
+            transform-origin: top;
+        }
+
+        @keyframes lightningZap {
+            0%, 45%, 55%, 100% { opacity: 0; transform: scaleY(0) rotate(var(--r)) translate(0, 0); }
+            50% { opacity: 1; transform: scaleY(2) rotate(var(--r)) translate(5px, 5px); }
+            51% { opacity: 0.5; transform: scaleY(1.5) rotate(calc(var(--r) + 10deg)) translate(-5px, 2px); }
+            52% { opacity: 1; transform: scaleY(2.5) rotate(var(--r)); }
+        }
+
+        .bolt:nth-child(1) { --r: 35deg; top: 15%; left: 25%; animation: lightningZap 4s infinite 0.1s; }
+        .bolt:nth-child(2) { --r: -20deg; top: 55%; left: 75%; animation: lightningZap 5.5s infinite 1.2s; }
+        .bolt:nth-child(3) { --r: 15deg; top: 10%; left: 85%; animation: lightningZap 3s infinite 0.5s; }
+        .bolt:nth-child(4) { --r: 170deg; top: 80%; left: 15%; animation: lightningZap 7s infinite 3s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(3vw, -4vh) scale(1.05); }
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-glass {
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .neon-text-blue { text-shadow: 0 0 15px var(--neon-blue); }
+        .btn-neon {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.4);
+        }
+
+        ::-webkit-scrollbar { width: 0px; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.12.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "recharts": "https://esm.sh/recharts@^3.6.0"
+  }
+}
+</script>
+</head>
+<body>
+    <div class="bg-animate"></div>
+    
+    <!-- 3D Electrified Background Brain -->
+    <div class="brain-3d-scene">
+        <div class="brain-3d-model">
+            <svg class="brain-layer layer-1" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></svg>
+            <svg class="brain-layer layer-2" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></svg>
+            <svg class="brain-layer layer-3" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></svg>
+            <svg class="brain-layer layer-4" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></svg>
+            <svg class="brain-layer layer-5" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></svg>
+        </div>
+    </div>
+
+    <div class="lightning">
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+    </div>
+
+    <!-- Soft Ambient Orbs -->
+    <div class="orb w-[500px] h-[500px] bg-blue-600 top-[-10%] left-[-20%]"></div>
+    <div class="orb w-[400px] h-[400px] bg-indigo-900 bottom-[-10%] right-[-10%]" style="animation-delay: -5s;"></div>
+    
+    <div id="root"></div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "StudyBuddy AI",
+  "description": "Een AI-gestuurde app die studiemateriaal analyseert via foto's en deze omzet in samenvattingen, oefenvragen en leerbriefjes.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
