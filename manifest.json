@@ -3,7 +3,7 @@
   "name": "StudyBuddy AI",
   "short_name": "StudyBuddy",
   "description": "AI-gestuurde huiswerk hulp en examen trainer.",
-  "start_url": "./",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#020617",
   "theme_color": "#020617",

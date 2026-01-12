@@ -30,7 +30,6 @@
             overflow: hidden;
         }
         
-        /* Subtle Dynamic Animated Background */
         .bg-animate {
             position: fixed;
             top: 0;
@@ -49,7 +48,6 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* Floating Soft Orbs */
         .orb {
             position: absolute;
             border-radius: 50%;
@@ -59,7 +57,6 @@
             animation: float 20s infinite alternate ease-in-out;
         }
 
-        /* 3D Electrified Brain Container */
         .brain-3d-scene {
             position: fixed;
             top: 50%;
@@ -81,7 +78,6 @@
             animation: rotate3DBrain 15s infinite linear;
         }
 
-        /* Multi-layered 3D effect */
         .brain-layer {
             position: absolute;
             top: 0;
@@ -95,7 +91,6 @@
             transition: stroke 0.5s ease;
         }
 
-        /* Layer Depth and Color Variances */
         .layer-1 { transform: translateZ(-80px); opacity: 0.1; stroke: var(--neon-purple); }
         .layer-2 { transform: translateZ(-40px); opacity: 0.2; }
         .layer-3 { transform: translateZ(0px); opacity: 0.7; stroke-width: 0.6; stroke: #fff; filter: drop-shadow(0 0 15px var(--neon-blue)); }
@@ -107,7 +102,6 @@
             to { transform: rotateY(360deg) rotateX(15deg) rotateZ(5deg); }
         }
 
-        /* Improved Lightning Bolts */
         .lightning {
             position: absolute;
             top: 0;
@@ -186,7 +180,6 @@
 <body>
     <div class="bg-animate"></div>
     
-    <!-- 3D Electrified Background Brain -->
     <div class="brain-3d-scene">
         <div class="brain-3d-model">
             <svg class="brain-layer layer-1" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></svg>
@@ -204,10 +197,12 @@
         <div class="bolt"></div>
     </div>
 
-    <!-- Soft Ambient Orbs -->
     <div class="orb w-[500px] h-[500px] bg-blue-600 top-[-10%] left-[-20%]"></div>
     <div class="orb w-[400px] h-[400px] bg-indigo-900 bottom-[-10%] right-[-10%]" style="animation-delay: -5s;"></div>
     
     <div id="root"></div>
+
+    <!-- Belangrijk: Deze regel start je app! -->
+    <script type="module" src="index.tsx"></script>
 </body>
 </html>

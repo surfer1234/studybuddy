@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { analyzeStudyMaterial } from '../services/geminiService';
-import { StudyFeature, StudyResult, QuizDifficulty } from '../types';
+import { analyzeStudyMaterial } from '../services/geminiService.ts';
+import { StudyFeature, StudyResult, QuizDifficulty } from '../types.ts';
 
 interface ProcessingProps {
   scans: string[];
