@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { StudyFeature, QuizDifficulty } from "../types";
+import { StudyFeature, QuizDifficulty } from "../types.ts";
 
 const SYSTEM_INSTRUCTION = `Je bent StudyBuddy, een hyper-intelligente AI voor Nederlandse studenten (10-18 jaar).
 Je output is enthousiast, modern en gebruikt soms emoji's.
@@ -15,9 +15,7 @@ export async function analyzeStudyMaterial(
   feature: StudyFeature,
   options: { level?: string; grade?: string; difficulty?: QuizDifficulty; questionCount?: number; [key: string]: any } = {}
 ): Promise<any> {
-  // Fix: Initializing GoogleGenAI with named parameter apiKey as per SDK guidelines
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  // Fix: Selecting gemini-3-pro-preview for complex reasoning and content analysis tasks
   const model = 'gemini-3-pro-preview';
   
   const imageParts = imagesBase64.map(base64 => ({
@@ -85,8 +83,8 @@ export async function analyzeStudyMaterial(
                 id: { type: Type.STRING },
                 type: { type: Type.STRING, enum: ['MCQ', 'OPEN', 'TRUE_FALSE', 'INVUL', 'MATCH', 'ORDERING'] },
                 question: { type: Type.STRING },
-                options: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Gebruikt voor MCQ opties, MATCH items, of ORDERING elementen" },
-                answer: { type: Type.STRING, description: "Correct antwoord (voor MCQ) of de juiste volgorde/koppeling gescheiden door komma's" },
+                options: { type: Type.ARRAY, items: { type: Type.STRING } },
+                answer: { type: Type.STRING },
                 explanation: { type: Type.STRING }
               },
               required: ['id', 'type', 'question', 'answer', 'explanation']
@@ -98,15 +96,7 @@ export async function analyzeStudyMaterial(
       break;
 
     case StudyFeature.TIPS:
-      prompt = `Genereer gepersonaliseerde studietips voor dit materiaal.${personalization}
-      Lever een JSON met de volgende velden:
-      - mnemonics: array van objecten met {concept, trick} (ezelsbruggetjes)
-      - strategies: array van strings (hoe dit vak te leren)
-      - pitfalls: array van strings (veelgemaakte fouten in dit onderwerp)
-      - timeManagement: een advies per hoofdstuk/onderwerp hoe lang te leren
-      - examTips: specifieke tactieken voor de toets
-      - realLifeConnections: hoe pas je dit toe in de echte wereld?`;
-      
+      prompt = `Genereer gepersonaliseerde studietips voor dit materiaal.${personalization}`;
       responseSchema = {
         type: Type.OBJECT,
         properties: {
@@ -150,7 +140,6 @@ export async function analyzeStudyMaterial(
             }
           }
         },
-        // Fix: Added missing required top-level fields for the schema
         required: ['title', 'sections']
       };
       break;
@@ -160,7 +149,6 @@ export async function analyzeStudyMaterial(
   }
 
   try {
-    // Fix: Using generateContent with correct model name and multi-part content
     const response = await ai.models.generateContent({
       model: model,
       contents: { parts: [...imageParts, { text: prompt }] },
@@ -170,7 +158,6 @@ export async function analyzeStudyMaterial(
         responseSchema: responseSchema
       },
     });
-    // Fix: Directly accessing .text property (not a method) as per SDK guidelines
     return JSON.parse(response.text || '{}');
   } catch (error) {
     console.error('Gemini Analysis Error:', error);

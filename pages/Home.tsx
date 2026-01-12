@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StudyResult, StudyFeature, UserSettings } from '../types';
+import { StudyResult, StudyFeature, UserSettings } from '../types.ts';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 interface HomeProps {
@@ -145,7 +145,6 @@ const Home: React.FC<HomeProps> = ({ results = [], settings, isLibrary = false, 
         </div>
       </section>
 
-      {/* Daily Motivation Card */}
       <section className="bg-white/5 border border-white/10 rounded-[2.5rem] p-6 flex items-center space-x-4">
          <div className="w-12 h-12 bg-yellow-500/20 rounded-2xl flex items-center justify-center text-2xl border border-yellow-500/30">🎯</div>
          <div className="flex-1">

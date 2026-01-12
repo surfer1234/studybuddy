@@ -5,9 +5,10 @@ import Home from './pages/Home.tsx';
 import Scan from './pages/Scan.tsx';
 import Processing from './pages/Processing.tsx';
 import Results from './pages/Results.tsx';
-import FeatureDetail from './pages/FeatureDetail.tsx';
-import Planner from './pages/Planner.tsx';
-import Settings from './pages/Settings.tsx';
+// Fix: Use named imports for components that were reported as not having default exports
+import { FeatureDetail } from './pages/FeatureDetail.tsx';
+import { Planner } from './pages/Planner.tsx';
+import { Settings } from './pages/Settings.tsx';
 import { StudyResult, UserSettings } from './types.ts';
 
 const AppLayout: React.FC<{ settings: UserSettings; children: React.ReactNode }> = ({ settings, children }) => {
