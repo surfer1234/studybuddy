@@ -2,14 +2,14 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#020617">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://api.dicebear.com/7.x/shapes/svg?seed=study&backgroundColor=00d2ff">
     <link rel="manifest" href="manifest.json">
     
-    <title>StudyBuddy - Let's Go! 🚀</title>
+    <title>StudyBuddy AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -18,8 +18,6 @@
             --glass-border: rgba(255, 255, 255, 0.12);
             --neon-blue: #00d2ff;
             --neon-purple: #9d50bb;
-            --neon-pink: #ff007a;
-            --neon-green: #39ff14;
         }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -27,6 +25,10 @@
             color: #f8fafc;
             margin: 0;
             overflow: hidden;
+            /* Voorkom 'rubber banding' op iOS */
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
         
         .bg-static {
@@ -36,7 +38,7 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: linear-gradient(135deg, #020617, #0f172a);
+            background: radial-gradient(circle at top right, #0f172a, #020617);
         }
         
         .orb {
@@ -44,7 +46,8 @@
             border-radius: 50%;
             filter: blur(120px);
             z-index: -1;
-            opacity: 0.1;
+            opacity: 0.15;
+            pointer-events: none;
         }
 
         .glass-card {
@@ -52,19 +55,41 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
-            transition: all 0.2s ease;
         }
 
         .nav-glass {
-            background: rgba(2, 6, 23, 0.9);
+            background: rgba(2, 6, 23, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        .neon-text-blue { text-shadow: 0 0 10px var(--neon-blue); }
+        .neon-text-blue { text-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
         .btn-neon {
             background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+        }
+
+        /* Initial Loader */
+        #initial-loader {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #020617;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loader-brain {
+            font-size: 4rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.5; }
         }
 
         ::-webkit-scrollbar { width: 0px; }
@@ -84,10 +109,14 @@
 </script>
 </head>
 <body>
+    <div id="initial-loader">
+        <div class="loader-brain">🧠</div>
+    </div>
+
     <div class="bg-static"></div>
     
-    <div class="orb w-[500px] h-[500px] bg-blue-600 top-[-10%] left-[-20%]"></div>
-    <div class="orb w-[400px] h-[400px] bg-indigo-900 bottom-[-10%] right-[-10%]"></div>
+    <div class="orb w-[500px] h-[500px] bg-blue-600 top-[-10%] left-[-20%] animate-pulse"></div>
+    <div class="orb w-[400px] h-[400px] bg-purple-900 bottom-[-10%] right-[-10%]"></div>
     
     <div id="root"></div>
     <script type="module" src="index.tsx"></script>
