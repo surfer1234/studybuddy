@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home.tsx';
@@ -16,7 +15,7 @@ const AppLayout: React.FC<{ settings: UserSettings; children: React.ReactNode }>
   const isScanning = location.pathname === '/scan';
 
   return (
-    <div className="flex flex-col h-screen max-w-md mx-auto relative overflow-hidden bg-transparent">
+    <div className="flex flex-col h-screen max-w-md mx-auto relative overflow-hidden bg-[#020617]">
       {!isScanning && (
         <header className="px-6 py-5 flex justify-between items-center z-50 shrink-0">
           <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => navigate('/')}>
@@ -30,7 +29,7 @@ const AppLayout: React.FC<{ settings: UserSettings; children: React.ReactNode }>
             className="w-10 h-10 rounded-full border-2 border-blue-500/30 p-0.5 overflow-hidden"
           >
             <img 
-              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${settings.avatarSeed}`} 
+              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${settings.avatarSeed || 'Emma'}`} 
               alt="Avatar" 
               className="w-full h-full rounded-full bg-blue-500/20" 
             />
@@ -51,7 +50,7 @@ const AppLayout: React.FC<{ settings: UserSettings; children: React.ReactNode }>
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" /></svg>
           </button>
           <button onClick={() => navigate('/planner')} className={`flex flex-col items-center transition-all ${location.pathname === '/planner' ? 'text-blue-400 scale-110' : 'text-gray-400'}`}>
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2-0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2-0 002-2V7a2 2-0 00-2-2H5a2 2-0 00-2 2v12a2 2-0 002 2z" /></svg>
           </button>
         </nav>
       )}
@@ -73,10 +72,27 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
-    const savedResults = localStorage.getItem('study_buddy_results');
-    if (savedResults) setResults(JSON.parse(savedResults));
-    const savedSettings = localStorage.getItem('study_buddy_settings');
-    if (savedSettings) setSettings(JSON.parse(savedSettings));
+    try {
+      const savedResults = localStorage.getItem('study_buddy_results');
+      if (savedResults) {
+        const parsed = JSON.parse(savedResults);
+        if (Array.isArray(parsed)) setResults(parsed);
+      }
+    } catch (e) {
+      console.error("Results load error:", e);
+    }
+
+    try {
+      const savedSettings = localStorage.getItem('study_buddy_settings');
+      if (savedSettings) {
+        const parsed = JSON.parse(savedSettings);
+        if (parsed && typeof parsed === 'object') {
+          setSettings(prev => ({ ...prev, ...parsed }));
+        }
+      }
+    } catch (e) {
+      console.error("Settings load error:", e);
+    }
   }, []);
 
   useEffect(() => {
@@ -101,6 +117,7 @@ const App: React.FC = () => {
       <AppLayout settings={settings}>
         <Routes>
           <Route path="/" element={<Home results={results} settings={settings} onDelete={deleteResult} />} />
+          <Route path="/library" element={<Home results={results} settings={settings} onDelete={deleteResult} isLibrary={true} />} />
           <Route path="/scan" element={<Scan setScans={setCurrentScans} />} />
           <Route path="/processing" element={<Processing scans={currentScans} results={results} onDone={addResult} onUpdate={updateResult} />} />
           <Route path="/results/:id" element={<Results results={results} onUpdate={updateResult} />} />
