@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserSettings } from '../types.ts';
@@ -37,7 +36,7 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
   };
 
   return (
-    <div className="space-y-8 pt-6 pb-32 animate-in fade-in slide-in-from-bottom-8 duration-500">
+    <div className="space-y-8 pt-6 pb-32">
       <header className="flex items-center space-x-4 px-2">
         <button 
           onClick={() => navigate(-1)}
@@ -50,7 +49,6 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
         <h2 className="text-4xl font-900 text-white italic tracking-tighter uppercase">Instellingen ⚙️</h2>
       </header>
 
-      {/* Profiel Sectie */}
       <section className="glass-card p-8 rounded-[2.5rem] border-white/10 relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/10 blur-[50px] -mr-16 -mt-16"></div>
         <div className="flex flex-col items-center space-y-6 relative z-10">
@@ -64,7 +62,7 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
             </div>
             <button 
               onClick={randomizeAvatar}
-              className="absolute bottom-0 right-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg border-4 border-[#020617] active:rotate-180 transition-transform duration-500"
+              className="absolute bottom-0 right-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg border-4 border-[#020617] active:scale-90 transition-transform"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -84,7 +82,6 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
         </div>
       </section>
 
-      {/* Onderwijs Sectie */}
       <section className="space-y-4">
         <h3 className="text-xs font-black text-white/40 uppercase tracking-[0.3em] px-4">Onderwijs Niveau 🎓</h3>
         <div className="glass-card p-6 rounded-[2.5rem] border-white/10 space-y-6">
@@ -95,7 +92,7 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
                 onClick={() => handleLevelChange(lvl)}
                 className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                   settings.level === lvl 
-                    ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)] border-transparent' 
+                    ? 'bg-blue-600 text-white shadow-lg border-transparent' 
                     : 'bg-white/5 text-white/50 border border-white/10'
                 }`}
               >
@@ -125,7 +122,6 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
         </div>
       </section>
 
-      {/* AI Vibe Sectie */}
       <section className="space-y-4">
         <h3 className="text-xs font-black text-white/40 uppercase tracking-[0.3em] px-4">AI Persoonlijkheid 🤖</h3>
         <div className="grid grid-cols-3 gap-3">
@@ -144,7 +140,6 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
         </div>
       </section>
 
-      {/* Voorkeuren Sectie */}
       <section className="space-y-4">
         <h3 className="text-xs font-black text-white/40 uppercase tracking-[0.3em] px-4">Voorkeuren 🔔</h3>
         <div className="glass-card rounded-[2.5rem] border-white/10 overflow-hidden divide-y divide-white/5">
@@ -175,7 +170,6 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
         </div>
       </section>
 
-      {/* Danger Zone */}
       <section className="pt-8">
         <button 
           onClick={() => {

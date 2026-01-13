@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { StudyResult, StudyFeature, QuizDifficulty } from '../types.ts';
@@ -34,7 +33,7 @@ const Results: React.FC<ResultsProps> = ({ results, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-8 pt-6 pb-20 animate-in fade-in slide-in-from-bottom-10 duration-700">
+    <div className="space-y-8 pt-6 pb-20">
       <section className="px-2">
         <div className="flex justify-between items-start mb-4">
           <div className="flex-1">
@@ -60,7 +59,6 @@ const Results: React.FC<ResultsProps> = ({ results, onUpdate }) => {
           </div>
         </div>
 
-        {/* Scan Preview */}
         <div className="flex space-x-3 overflow-x-auto pb-4 -mx-2 px-2 scrollbar-hide">
           {result.images.map((img, idx) => (
             <div key={idx} className="relative shrink-0 w-24 h-32 rounded-2xl overflow-hidden border-2 border-white/10 shadow-xl group hover:border-blue-500 transition-colors">
@@ -72,14 +70,13 @@ const Results: React.FC<ResultsProps> = ({ results, onUpdate }) => {
         </div>
       </section>
 
-      {/* Main Actions */}
       <section className="grid grid-cols-1 gap-5">
         <button 
           onClick={() => navigate(`/detail/${result.id}?feature=${StudyFeature.SUMMARY}`)}
           className="glass-card p-8 rounded-[2.5rem] border-white/10 flex items-center space-x-6 active:scale-95 transition-all group overflow-hidden relative"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-4xl shadow-lg group-hover:rotate-6 transition-transform">📝</div>
+          <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-4xl shadow-lg transition-transform">📝</div>
           <div className="text-left">
             <h4 className="font-900 text-white text-xl italic leading-none">SAMENVATTING</h4>
             <p className="text-[9px] text-white/40 font-black uppercase tracking-widest mt-2">De kern in turbo-modus</p>
@@ -108,7 +105,7 @@ const Results: React.FC<ResultsProps> = ({ results, onUpdate }) => {
                  onClick={() => navigate(`/detail/${result.id}?feature=${StudyFeature.QUIZ}&mode=exam`)}
                  className="bg-red-600/20 hover:bg-red-600/30 border border-red-500/30 py-5 rounded-2xl flex flex-col items-center transition-all group"
                >
-                 <span className="text-2xl mb-1 group-hover:animate-pulse">⏱️</span>
+                 <span className="text-2xl mb-1">⏱️</span>
                  <span className="text-[9px] font-black text-red-400 uppercase tracking-tighter">Examen Mode</span>
                </button>
              </div>
@@ -126,7 +123,7 @@ const Results: React.FC<ResultsProps> = ({ results, onUpdate }) => {
              }}
              className="glass-card p-6 rounded-[2.2rem] border-white/10 flex flex-col items-center text-center group active:scale-95 transition-all"
            >
-             <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📄</div>
+             <div className="text-4xl mb-3">📄</div>
              <h4 className="font-900 text-white text-xs italic tracking-tighter">LEERBRIEFJE</h4>
            </button>
            <button 
@@ -139,7 +136,7 @@ const Results: React.FC<ResultsProps> = ({ results, onUpdate }) => {
              }}
              className="glass-card p-6 rounded-[2.2rem] border-white/10 flex flex-col items-center text-center group active:scale-95 transition-all"
            >
-             <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">💡</div>
+             <div className="text-4xl mb-3">💡</div>
              <h4 className="font-900 text-white text-xs italic tracking-tighter">STUDIETIPS</h4>
            </button>
         </div>

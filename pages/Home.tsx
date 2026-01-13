@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StudyResult, StudyFeature, UserSettings } from '../types.ts';
@@ -43,7 +42,7 @@ const Home: React.FC<HomeProps> = ({ results = [], settings, isLibrary = false, 
 
   if (isLibrary) {
     return (
-      <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-6 duration-500">
+      <div className="space-y-6 pt-4">
         <div className="flex justify-between items-end px-2">
           <div>
             <h2 className="text-4xl font-900 text-white tracking-tighter italic">Mijn Bieb 📚</h2>
@@ -72,7 +71,7 @@ const Home: React.FC<HomeProps> = ({ results = [], settings, isLibrary = false, 
                 className="glass-card p-6 rounded-[2rem] flex items-center justify-between group active:scale-[0.98] border-white/10 hover:border-blue-500/50 transition-colors"
               >
                 <div className="flex items-center space-x-5 min-w-0">
-                  <div className="w-16 h-16 bg-white/5 rounded-[1.5rem] flex items-center justify-center text-4xl shadow-inner border border-white/10 group-hover:rotate-6 transition-transform">
+                  <div className="w-16 h-16 bg-white/5 rounded-[1.5rem] flex items-center justify-center text-4xl shadow-inner border border-white/10 transition-transform">
                     {getFeatureIcon(res.feature)}
                   </div>
                   <div className="min-w-0">
@@ -99,7 +98,7 @@ const Home: React.FC<HomeProps> = ({ results = [], settings, isLibrary = false, 
   }
 
   return (
-    <div className="space-y-8 pt-6 animate-in fade-in duration-700">
+    <div className="space-y-8 pt-6">
       <section className="px-2 flex justify-between items-center">
         <div>
           <h2 className="text-4xl font-900 text-white tracking-tighter italic neon-text-blue line-clamp-1 max-w-[200px]">Yo {settings.name}! 🔥</h2>
@@ -159,7 +158,7 @@ const Home: React.FC<HomeProps> = ({ results = [], settings, isLibrary = false, 
           className="glass-card p-8 rounded-[2rem] border-white/10 flex flex-col items-center space-y-4 active:scale-95 transition-all group overflow-hidden relative"
         >
           <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="w-16 h-16 bg-gradient-to-tr from-orange-400 to-red-600 text-white rounded-[1.5rem] flex items-center justify-center shadow-[0_0_20px_rgba(251,146,60,0.4)] group-hover:rotate-12 transition-transform relative z-10">
+          <div className="w-16 h-16 bg-gradient-to-tr from-orange-400 to-red-600 text-white rounded-[1.5rem] flex items-center justify-center shadow-lg relative z-10">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 4v16m8-8H4" />
             </svg>
@@ -171,7 +170,7 @@ const Home: React.FC<HomeProps> = ({ results = [], settings, isLibrary = false, 
           className="glass-card p-8 rounded-[2rem] border-white/10 flex flex-col items-center space-y-4 active:scale-95 transition-all group overflow-hidden relative"
         >
           <div className="absolute inset-0 bg-gradient-to-tr from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="w-16 h-16 bg-gradient-to-tr from-green-400 to-emerald-600 text-white rounded-[1.5rem] flex items-center justify-center shadow-[0_0_20px_rgba(52,211,153,0.4)] group-hover:-rotate-12 transition-transform relative z-10">
+          <div className="w-16 h-16 bg-gradient-to-tr from-green-400 to-emerald-600 text-white rounded-[1.5rem] flex items-center justify-center shadow-lg relative z-10">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2-0 002-2V7a2 2-0 00-2-2H5a2 2-0 00-2 2v12a2 2 0 002 2z" />
             </svg>
@@ -193,8 +192,8 @@ const Home: React.FC<HomeProps> = ({ results = [], settings, isLibrary = false, 
                 onClick={() => navigate(`/results/${res.id}`)}
                 className="glass-card min-w-[180px] p-6 rounded-[2.2rem] border-white/5 flex flex-col items-center text-center active:scale-95 transition-all shrink-0 relative overflow-hidden group"
               >
-                <div className="absolute top-0 right-0 w-16 h-16 bg-white/5 -mr-8 -mt-8 rotate-45 group-hover:bg-blue-500/10 transition-colors"></div>
-                <div className="text-5xl mb-4 drop-shadow-lg group-hover:scale-110 transition-transform">{getFeatureIcon(res.feature)}</div>
+                <div className="absolute top-0 right-0 w-16 h-16 bg-white/5 -mr-8 -mt-8 rotate-45 transition-colors"></div>
+                <div className="text-5xl mb-4 drop-shadow-lg">{getFeatureIcon(res.feature)}</div>
                 <h4 className="font-900 text-white text-sm italic line-clamp-1 w-full">{res.subject || 'Onderwerp'}</h4>
                 <div className="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full text-[8px] font-black mt-3 uppercase tracking-widest border border-blue-400/20">Openen</div>
               </div>
@@ -208,8 +207,7 @@ const Home: React.FC<HomeProps> = ({ results = [], settings, isLibrary = false, 
       </section>
 
       <section className="bg-gradient-to-r from-pink-600/40 to-purple-600/40 rounded-[2.5rem] p-8 flex items-center space-x-6 border border-white/10 backdrop-blur-3xl relative overflow-hidden">
-        <div className="absolute inset-0 shimmer opacity-20"></div>
-        <div className="text-6xl animate-bounce drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">🔥</div>
+        <div className="text-6xl drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">🔥</div>
         <div className="relative z-10">
           <p className="font-900 text-white text-2xl leading-none tracking-tighter uppercase italic">STREAK: 3 DAGEN</p>
           <p className="text-sm text-pink-200/60 font-black uppercase tracking-widest mt-1">Niet stoppen nu! 🧠</p>
