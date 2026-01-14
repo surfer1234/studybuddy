@@ -17,6 +17,7 @@ export interface UserSettings {
   aiPersonality: 'HYPED' | 'CHILL' | 'PRO';
   streakReminders: boolean;
   avatarSeed: string;
+  apiKey?: string;
 }
 
 export interface SummaryData {
