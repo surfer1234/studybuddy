@@ -2,42 +2,48 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 
-// Ensure 'process' is available for the Gemini SDK in a browser environment
-if (typeof (window as any).process === 'undefined') {
-    (window as any).process = { env: { API_KEY: '' } };
-}
+// Onmiddellijke polyfill voor process.env
+(window as any).process = { env: { API_KEY: '' }, ...(window as any).process };
 
-// Global error handler to catch mobile-specific JS failures
+// Detecteer of het laden vastloopt (na 5 seconden)
+const stuckTimer = setTimeout(() => {
+    const stuckMsg = document.getElementById('stuck-message');
+    if (stuckMsg) stuckMsg.style.display = 'block';
+}, 5000);
+
+// Global error handler
 window.addEventListener('error', (event) => {
-    console.error('StudyBuddy Startup Error:', event.error);
+    console.error('StudyBuddy Crash:', event.error);
+    clearTimeout(stuckTimer);
     const root = document.getElementById('root');
-    // If the error happens before the app clears the loading state
-    if (root && root.querySelector('.loading-state')) {
+    if (root && root.innerHTML.includes('loading-state')) {
         root.innerHTML = `
             <div style="color: white; padding: 40px; font-family: sans-serif; background: #020617; height: 100dvh; display: flex; flex-direction: column; justify-content: center;">
                 <h2 style="color: #ef4444; font-size: 24px;">Hulp nodig! 🚨</h2>
-                <p style="opacity: 0.7; margin: 10px 0 20px;">Je browser blokkeert de verbinding of is te verouderd.</p>
+                <p style="opacity: 0.7; margin: 10px 0 20px;">De app kon niet veilig opstarten.</p>
                 <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 11px; margin-bottom: 20px; overflow: auto; border: 1px solid rgba(239, 68, 68, 0.2);">
-                    ${event.error?.message || 'Onbekende fout'}
+                    ${event.error?.message || 'Script Error'}
                 </div>
-                <button onclick="location.reload()" style="background: #3b82f6; color: white; border: none; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 16px;">App Herstarten</button>
+                <button onclick="location.reload()" style="background: #3b82f6; color: white; border: none; padding: 16px; border-radius: 12px; font-weight: bold;">Probeer Opnieuw</button>
             </div>
         `;
     }
 });
-
-console.log("Bootstrap starting...");
 
 const container = document.getElementById('root');
 
 if (container) {
   try {
     const root = createRoot(container);
-    root.render(<App />);
-    console.log("React mounting...");
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+    // Verwijder de "stuck timer" zodra React begint te renderen
+    clearTimeout(stuckTimer);
+    console.log("React render sequence started.");
   } catch (err) {
-    console.error("React Mounting Failed:", err);
+    console.error("Mounting error:", err);
   }
-} else {
-  console.error("Critical DOM Error: #root missing.");
 }
