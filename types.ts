@@ -18,6 +18,7 @@ export interface UserSettings {
   streakReminders: boolean;
   avatarSeed: string;
   apiKey?: string;
+  onboardingComplete?: boolean;
 }
 
 export interface SummaryData {

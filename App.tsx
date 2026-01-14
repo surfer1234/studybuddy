@@ -7,6 +7,7 @@ import Results from './pages/Results.tsx';
 import FeatureDetail from './pages/FeatureDetail.tsx';
 import Planner from './pages/Planner.tsx';
 import Settings from './pages/Settings.tsx';
+import Onboarding from './pages/Onboarding.tsx';
 import { StudyResult, UserSettings } from './types.ts';
 
 const AppLayout: React.FC<{ settings: UserSettings; children: React.ReactNode }> = ({ settings, children }) => {
@@ -58,15 +59,16 @@ const AppLayout: React.FC<{ settings: UserSettings; children: React.ReactNode }>
 const App: React.FC = () => {
   const [results, setResults] = useState<StudyResult[]>([]);
   const [currentScans, setCurrentScans] = useState<string[]>([]);
-  const [settings, setSettings] = useState<UserSettings>(() => {
+  const [settings, setSettings] = useState<UserSettings | null>(() => {
     try {
       const saved = localStorage.getItem('study_buddy_settings');
-      return saved ? JSON.parse(saved) : {
-        name: 'Emma', level: 'HAVO', grade: '4', notifications: true,
-        aiPersonality: 'HYPED', streakReminders: true, avatarSeed: 'Emma'
-      };
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.onboardingComplete) return parsed;
+      }
+      return null;
     } catch {
-      return { name: 'Emma', level: 'HAVO', grade: '4', notifications: true, aiPersonality: 'HYPED', streakReminders: true, avatarSeed: 'Emma' };
+      return null;
     }
   });
 
@@ -86,8 +88,14 @@ const App: React.FC = () => {
   }, [results]);
 
   useEffect(() => {
-    localStorage.setItem('study_buddy_settings', JSON.stringify(settings));
+    if (settings) {
+      localStorage.setItem('study_buddy_settings', JSON.stringify(settings));
+    }
   }, [settings]);
+
+  if (!settings || !settings.onboardingComplete) {
+    return <Onboarding onComplete={setSettings} />;
+  }
 
   return (
     <HashRouter>
