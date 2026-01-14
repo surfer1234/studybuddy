@@ -25,7 +25,11 @@ const AppLayout: React.FC<{ settings: UserSettings; children: React.ReactNode }>
             <h1 className="text-2xl font-bold text-white italic">StudyBuddy</h1>
           </div>
           <button onClick={() => navigate('/settings')} className="w-10 h-10 rounded-full border-2 border-blue-500/30 overflow-hidden">
-            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${settings.avatarSeed}`} alt="User" />
+            <img 
+              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${settings.avatarSeed}`} 
+              alt="User" 
+              onError={(e) => (e.currentTarget.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=fallback')}
+            />
           </button>
         </header>
       )}
@@ -60,11 +64,16 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
+    console.log("StudyBuddy: App Component Mounted.");
+    
     // Hide loader immediately after mount
     const loader = document.getElementById('initial-loader');
     if (loader) {
       loader.style.opacity = '0';
-      setTimeout(() => loader.remove(), 500);
+      setTimeout(() => {
+        loader.remove();
+        console.log("StudyBuddy: Loader removed.");
+      }, 500);
     }
 
     try {
@@ -72,11 +81,15 @@ const App: React.FC = () => {
       if (res) setResults(JSON.parse(res));
       const set = localStorage.getItem('study_buddy_settings');
       if (set) setSettings(JSON.parse(set));
-    } catch (e) { console.debug("Init local storage error:", e); }
+    } catch (e) { 
+      console.debug("Init local storage error:", e); 
+    }
   }, []);
 
   useEffect(() => { 
-    if (results.length > 0) localStorage.setItem('study_buddy_results', JSON.stringify(results)); 
+    if (results.length > 0) {
+      localStorage.setItem('study_buddy_results', JSON.stringify(results)); 
+    }
   }, [results]);
   
   useEffect(() => { 
@@ -94,6 +107,8 @@ const App: React.FC = () => {
           <Route path="/detail/:id" element={<FeatureDetail results={results} />} />
           <Route path="/planner" element={<Planner results={results} />} />
           <Route path="/settings" element={<Settings settings={settings} onUpdate={setSettings} onResetData={() => { localStorage.clear(); window.location.reload(); }} />} />
+          {/* Library view using Home with isLibrary prop */}
+          <Route path="/library" element={<Home results={results} settings={settings} isLibrary={true} onDelete={id => setResults(r => r.filter(x => x.id !== id))} />} />
         </Routes>
       </AppLayout>
     </HashRouter>
