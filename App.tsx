@@ -15,7 +15,7 @@ const AppLayout: React.FC<{ settings: UserSettings; children: React.ReactNode }>
   const isScanning = location.pathname === '/scan';
 
   return (
-    <div className="flex flex-col h-full w-full max-w-md mx-auto relative overflow-hidden bg-transparent">
+    <div className="flex flex-col h-full w-full max-w-md mx-auto relative overflow-hidden bg-[#020617]">
       {!isScanning && (
         <header className="px-6 py-4 flex justify-between items-center z-50 shrink-0 pt-[env(safe-area-inset-top,20px)]">
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
