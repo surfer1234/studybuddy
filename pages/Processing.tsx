@@ -14,6 +14,7 @@ const Processing: React.FC<ProcessingProps> = ({ scans, results, onDone, onUpdat
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState('Booting Brain...');
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const targetFeature = (searchParams.get('feature') as StudyFeature) || StudyFeature.SUMMARY;
@@ -83,13 +84,39 @@ const Processing: React.FC<ProcessingProps> = ({ scans, results, onDone, onUpdat
         }
       } catch (err) {
         console.error(err);
-        setStatus('BRAIN ERROR... REBOOTING.');
+        const errorMsg = err instanceof Error ? err.message : 'Onbekende fout';
+        setError(errorMsg);
+        setStatus('ERROR');
       }
     }
 
     process();
     return () => clearInterval(interval);
   }, [scans, targetFeature, targetId, results, onDone, onUpdate, navigate, targetDifficulty, targetCount]);
+
+  if (error) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-10 bg-transparent text-center">
+        <div className="text-8xl mb-8">😵</div>
+        <h2 className="text-3xl font-900 text-white mb-4 tracking-tighter italic">Oeps, er ging iets mis!</h2>
+        <p className="text-red-400 text-sm mb-8 max-w-xs">{error}</p>
+        <div className="space-y-3 w-full max-w-xs">
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs active:scale-95 transition-transform"
+          >
+            Opnieuw Proberen
+          </button>
+          <button
+            onClick={() => navigate('/')}
+            className="w-full py-4 bg-white/10 text-white rounded-2xl font-black uppercase tracking-widest text-xs active:scale-95 transition-transform"
+          >
+            Terug naar Home
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col items-center justify-center p-10 bg-transparent text-center overflow-hidden">
@@ -100,13 +127,13 @@ const Processing: React.FC<ProcessingProps> = ({ scans, results, onDone, onUpdat
         <div className="relative z-10 w-56 h-56">
            <div className="absolute inset-0">
               {[...Array(5)].map((_, i) => (
-                <svg 
+                <svg
                   key={i}
-                  className="absolute inset-0 w-full h-full text-blue-300 opacity-20" 
+                  className="absolute inset-0 w-full h-full text-blue-300 opacity-20"
                   style={{ transform: `translateZ(${(i - 2) * 10}px)` }}
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
                   strokeWidth="0.5"
                 >
                   <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z" />
@@ -119,8 +146,8 @@ const Processing: React.FC<ProcessingProps> = ({ scans, results, onDone, onUpdat
 
         <div className="absolute -bottom-4 -right-4 w-24 h-24 glass-card rounded-[2.5rem] flex flex-col items-center justify-center border-white/20 z-20">
           <span className="text-4xl">
-            {targetFeature === StudyFeature.QUIZ ? '❓' : 
-             targetFeature === StudyFeature.CHEAT_SHEET ? '📄' : 
+            {targetFeature === StudyFeature.QUIZ ? '❓' :
+             targetFeature === StudyFeature.CHEAT_SHEET ? '📄' :
              targetFeature === StudyFeature.TIPS ? '💡' : '📝'}
           </span>
           <span className="text-[8px] font-black text-blue-400 mt-1 uppercase tracking-widest">Active</span>
@@ -136,7 +163,7 @@ const Processing: React.FC<ProcessingProps> = ({ scans, results, onDone, onUpdat
            <span className="text-blue-300 font-900">{progress}%</span>
         </div>
         <div className="w-full bg-white/5 h-5 rounded-full overflow-hidden border border-white/10 p-1 backdrop-blur-md">
-          <div 
+          <div
             className="bg-gradient-to-r from-blue-400 to-purple-500 h-full rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
           ></div>

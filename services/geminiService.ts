@@ -20,7 +20,7 @@ export async function analyzeStudyMaterial(
     throw new Error('API configuratie ontbreekt. Neem contact op met de beheerder.');
   }
   const ai = new GoogleGenAI({ apiKey });
-  const model = 'gemini-2.0-flash';
+  const model = 'gemini-1.5-flash';
   
   const imageParts = imagesBase64.map(base64 => ({
     inlineData: {
