@@ -16,7 +16,7 @@ export async function analyzeStudyMaterial(
   options: { level?: string; grade?: string; difficulty?: QuizDifficulty; questionCount?: number; [key: string]: any } = {}
 ): Promise<any> {
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  const model = 'gemini-3-pro-preview';
+  const model = 'gemini-2.0-flash';
   
   const imageParts = imagesBase64.map(base64 => ({
     inlineData: {
