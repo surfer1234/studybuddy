@@ -141,25 +141,6 @@ const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onResetData }) 
       </section>
 
       <section className="space-y-4">
-        <h3 className="text-xs font-black text-white/40 uppercase tracking-[0.3em] px-4">API Configuratie 🔑</h3>
-        <div className="glass-card p-6 rounded-[2.5rem] border-white/10 space-y-4">
-          <div className="space-y-2">
-            <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Gemini API Key</p>
-            <input
-              type="password"
-              value={settings.apiKey || ''}
-              onChange={(e) => onUpdate({...settings, apiKey: e.target.value})}
-              placeholder="Voer je Gemini API key in..."
-              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-blue-500/50 transition-colors"
-            />
-            <p className="text-[9px] text-white/40">
-              Krijg je key op <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">aistudio.google.com</a>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="space-y-4">
         <h3 className="text-xs font-black text-white/40 uppercase tracking-[0.3em] px-4">Voorkeuren 🔔</h3>
         <div className="glass-card rounded-[2.5rem] border-white/10 overflow-hidden divide-y divide-white/5">
           <div className="p-6 flex justify-between items-center">

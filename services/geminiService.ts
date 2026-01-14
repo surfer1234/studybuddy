@@ -10,25 +10,14 @@ Pas je taalgebruik aan op het niveau:
 - VMBO/HAVO: To-the-point, praktisch.
 - VWO/HBO/WO: Academisch, diepgaand, kritisch.`;
 
-function getApiKey(): string {
-  try {
-    const settings = localStorage.getItem('study_buddy_settings');
-    if (settings) {
-      const parsed = JSON.parse(settings);
-      if (parsed.apiKey) return parsed.apiKey;
-    }
-  } catch {}
-  return process.env.API_KEY || '';
-}
-
 export async function analyzeStudyMaterial(
   imagesBase64: string[],
   feature: StudyFeature,
   options: { level?: string; grade?: string; difficulty?: QuizDifficulty; questionCount?: number; [key: string]: any } = {}
 ): Promise<any> {
-  const apiKey = getApiKey();
+  const apiKey = process.env.API_KEY || '';
   if (!apiKey) {
-    throw new Error('Geen API key gevonden. Ga naar Instellingen om je Gemini API key in te voeren.');
+    throw new Error('API configuratie ontbreekt. Neem contact op met de beheerder.');
   }
   const ai = new GoogleGenAI({ apiKey });
   const model = 'gemini-2.0-flash';
