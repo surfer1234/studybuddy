@@ -5,71 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#020617">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://api.dicebear.com/7.x/shapes/svg?seed=study&backgroundColor=00d2ff">
+    <link rel="apple-touch-icon" href="https://api.dicebear.com/7.x/shapes/svg?seed=study">
     
     <title>StudyBuddy AI</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     
+    <!-- ES Module Shims: Verplicht voor betrouwbare importmap support op mobiel -->
     <script async src="https://ga.jspm.io/npm:es-module-shims@1.10.0/dist/es-module-shims.js"></script>
 
     <style>
-        :root { --neon-blue: #00d2ff; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background: #020617; color: #f8fafc;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow: hidden; position: fixed;
-        }
-        #root { width: 100%; height: 100%; background: #020617; position: relative; z-index: 1; }
-        .bg-static {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at top right, #0f172a, #020617);
-        }
-        .loading-state {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100dvh; width: 100%; background: #020617;
-        }
-        .spinner {
-            width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1);
-            border-left-color: var(--neon-blue); border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 20px;
-        }
+        body, html { margin: 0; padding: 0; background: #020617; color: white; font-family: 'Plus Jakarta Sans', sans-serif; height: 100%; overflow: hidden; }
+        #root { height: 100dvh; width: 100%; display: flex; flex-direction: column; }
+        .boot-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; text-align: center; }
+        .loader { width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .nav-glass { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
-        .glass-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.12); }
+        .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 20px; border-radius: 16px; margin: 20px; display: none; }
     </style>
 
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@19.0.0",
-    "react/": "https://esm.sh/react@19.0.0/",
-    "react-dom": "https://esm.sh/react-dom@19.0.0",
-    "react-dom/": "https://esm.sh/react-dom@19.0.0/",
-    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
-    "react-router-dom": "https://esm.sh/react-router-dom@7.1.5?deps=react@19.0.0,react-dom@19.0.0",
-    "@google/genai": "https://esm.sh/@google/genai@1.3.0",
-    "recharts": "https://esm.sh/recharts@2.15.0?deps=react@19.0.0,react-dom@19.0.0"
-  }
-}
-</script>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@19.0.0",
+        "react/": "https://esm.sh/react@19.0.0/",
+        "react-dom": "https://esm.sh/react-dom@19.0.0",
+        "react-dom/": "https://esm.sh/react-dom@19.0.0/",
+        "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+        "react-router-dom": "https://esm.sh/react-router-dom@7.1.5?deps=react@19.0.0,react-dom@19.0.0",
+        "@google/genai": "https://esm.sh/@google/genai@1.3.0",
+        "recharts": "https://esm.sh/recharts@2.15.0?deps=react@19.0.0,react-dom@19.0.0"
+      }
+    }
+    </script>
 </head>
 <body>
-    <div class="bg-static"></div>
     <div id="root">
-        <div class="loading-state">
-            <div class="spinner"></div>
-            <p id="loading-text" style="font-weight: 800; font-style: italic; opacity: 0.8;">StudyBuddy start op...</p>
-            <div id="stuck-message" style="display:none; margin-top: 20px; text-align: center; padding: 0 20px;">
-                <p style="font-size: 12px; opacity: 0.6; margin-bottom: 15px;">Duurt het lang? Mogelijk blokkeert je browser iets.</p>
-                <button onclick="location.reload(true)" style="background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold;">Forceer Herstart</button>
+        <div class="boot-screen" id="boot-screen">
+            <div class="loader"></div>
+            <p style="font-weight: 800; font-style: italic; opacity: 0.8; letter-spacing: 1px;">STUDYBUDDY START OP...</p>
+            
+            <div id="error-display" class="error-box">
+                <p style="color: #ef4444; font-weight: bold; margin-bottom: 10px;">Opstartfout gedetecteerd</p>
+                <code id="error-message" style="font-size: 10px; display: block; margin-bottom: 15px; opacity: 0.7;"></code>
+                <button onclick="location.reload(true)" style="background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold;">Herstart App</button>
             </div>
         </div>
     </div>
+
+    <script>
+        // Vang runtime fouten direct op om witte schermen te voorkomen
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            const display = document.getElementById('error-display');
+            const msgEl = document.getElementById('error-message');
+            if (display && msgEl) {
+                display.style.display = 'block';
+                msgEl.innerText = msg + (lineNo ? ' (Lijn: ' + lineNo + ')' : '');
+            }
+            return false;
+        };
+    </script>
     <script type="module" src="index.tsx"></script>
 </body>
 </html>
