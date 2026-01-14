@@ -22,6 +22,14 @@
         .loader { width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 20px; border-radius: 16px; margin: 20px; display: none; }
+
+        /* Custom glass and neon styles */
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .nav-glass { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); }
+        .btn-neon { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+        .neon-text-blue { text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 
     <script type="importmap">
