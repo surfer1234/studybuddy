@@ -2,40 +2,33 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 
-// Functie om de loader te verwijderen
-const hideLoader = () => {
-  const loader = document.getElementById('initial-loader');
-  if (loader) {
-    loader.style.opacity = '0';
-    setTimeout(() => loader.remove(), 500);
+/**
+ * FIXED: ServiceWorker errors often occur if we query registrations too early
+ * or during transition phases. Wrapping in a check and DOM readiness.
+ */
+const cleanupServiceWorkers = async () => {
+  if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    try {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (const registration of registrations) {
+        await registration.unregister();
+      }
+    } catch (err) {
+      console.debug("SW Cleanup skipped:", err);
+    }
   }
 };
 
+// Start boot process
+console.log("StudyBuddy: Initializing...");
+
 const rootElement = document.getElementById('root');
-if (!rootElement) {
-  throw new Error("Could not find root element to mount to");
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(<App />);
+  
+  // Clean up workers after a small delay to ensure page is stable
+  setTimeout(cleanupServiceWorkers, 1000);
+} else {
+  console.error("Critical Error: Root element missing");
 }
-
-// FORCEER UNREGISTER VAN OUDE SERVICE WORKER
-// Dit voorkomt caching van verouderde versies op mobiele browsers
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations()
-    .then((registrations) => {
-      for (let registration of registrations) {
-        registration.unregister();
-      }
-    })
-    .catch((err) => {
-      console.debug("ServiceWorker registration access skipped:", err);
-    });
-}
-
-const root = createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// Verwijder de initial loader zodra React klaar is
-setTimeout(hideLoader, 100);
